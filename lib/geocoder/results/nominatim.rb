@@ -17,7 +17,7 @@ module Geocoder::Result
     end
 
     def street
-      %w[road pedestrian highway].each do |key|
+      %w[road pedestrian highway footway].each do |key|
         return @data['address'][key] if @data['address'].key?(key)
       end
       return nil
