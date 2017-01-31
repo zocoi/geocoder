@@ -3,6 +3,10 @@ require "geocoder/results/google"
 module Geocoder
   module Result
     class GooglePlacesDetails < Google
+      def name
+        @data["name"]
+      end
+
       def place_id
         @data["place_id"]
       end
