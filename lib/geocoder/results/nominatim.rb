@@ -23,6 +23,10 @@ module Geocoder::Result
       return nil
     end
 
+    def neighborhood
+      @data['address']['neighbourhood']
+    end
+
     def city
       %w[city town village hamlet].each do |key|
         return @data['address'][key] if @data['address'].key?(key)
