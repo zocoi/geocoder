@@ -75,6 +75,7 @@ module Geocoder::Result
     def house_number
       @data['address']['house_number']
     end
+    alias_method :street_number, :house_number
 
     def address
       @data['display_name']
@@ -85,6 +86,10 @@ module Geocoder::Result
         return @data['address'][key] if @data['address'].key?(key)
       end
       return nil
+    end
+
+    def street_address
+      [house_number, street].compact.join(' ')
     end
 
     def neighborhood
