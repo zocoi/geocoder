@@ -70,6 +70,7 @@ module Geocoder::Result
       return @data['address'][place_type] if @data['address'].key?(place_type)
       return nil
     end
+    alias_method :name, :poi
 
     def house_number
       @data['address']['house_number']
