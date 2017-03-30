@@ -5,8 +5,8 @@ module Geocoder::Result
 
     US_STATES = {
       'alabama' => 'AL',
-      'alaska' =>	'AK',
-      'american samoa' =>	'AS',
+      'alaska' => 'AK',
+      'american samoa' => 'AS',
       'arizona' =>	'AZ',
       'arkansas' =>	'AR',
       'california' =>	'CA',
@@ -56,18 +56,21 @@ module Geocoder::Result
       'tennessee' =>	'TN',
       'texas' =>	'TX',
       'utah' =>	'UT',
-      'vermont' =>	'VT',
+      'vermont' => 'VT',
       'virginia' =>	'VA',
       'virgin islands' =>	'VI',
       'washington' =>	'WA',
       'west virginia' => 'WV',
-      'wisconsin' =>	'WI',
-      'wyoming' =>	'WY'
+      'wisconsin' => 'WI',
+      'wyoming' => 'WY'
     }
 
 
     def poi
       return @data['address'][place_type] if @data['address'].key?(place_type)
+      %w[building university school hospital mall hotel restaurant stadium bus_stop tram_stop].each do |key|
+        return @data['address'][key] if @data['address'].key?(key)
+      end
       return nil
     end
     alias_method :name, :poi
