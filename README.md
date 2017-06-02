@@ -114,6 +114,10 @@ Geocoder will print warnings if you exceed the rate limit for your geocoding ser
 
     rake geocode:all CLASS=YourModel SLEEP=0.25 BATCH=100
 
+To avoid per-day limit issues (for example if you are trying to geocode thousands of objects and don't want to reach the limit), you can add a `LIMIT` option. Warning: This will ignore the `BATCH` value if provided.
+
+    rake geocode:all CLASS=YourModel LIMIT=1000
+
 ### Avoiding Unnecessary API Requests
 
 Geocoding only needs to be performed under certain conditions. To avoid unnecessary work (and quota usage) you will probably want to geocode an object only when:
@@ -596,13 +600,13 @@ The [Google Places Search API](https://developers.google.com/places/web-service/
 
 #### Pelias (`:pelias`)
 
-* **API key**: required
+* **API key**: configurable (self-hosted service)
 * **Quota**: none (self-hosted service)
 * **Region**: world
 * **SSL support**: yes
 * **Languages**: en
-* **Documentation**: https://mapzen.com/documentation/search/search/
-* **Terms of Service**: http://mapzen.com/terms
+* **Documentation**: https://github.com/pelias/pelias
+* **Terms of Service**: https://github.com/pelias/pelias/blob/master/data_licenses.md
 * **Limitations**: See terms
 * **Notes**: Configure your self-hosted pelias with the `endpoint` option: `Geocoder.configure(:lookup => :pelias, :api_key => 'your_api_key', :pelias => {:endpoint => 'self.hosted/pelias'})`. Defaults to `localhost`.
 
@@ -713,6 +717,18 @@ This uses the PostcodeAnywhere UK Geocode service, this will geocode any string 
 * **Terms of Service**: https://adresse.data.gouv.fr/faq/ (in french)
 * **Limitations**: [Data licensed under Open Database License (ODbL) (you must provide attribution).](http://openstreetmap.fr/ban)
 
+#### AMap (`:amap`)
+
+- **API key**: required
+- **Quota**: 2000/day and 2000/minute for personal developer, 4000000/day and 60000/minute for enterprise developer, for geocoding requests
+- **Region**: China
+- **SSL support**: yes
+- **Languages**: Chinese (Simplified)
+- **Documentation**: http://lbs.amap.com/api/webservice/guide/api/georegeo
+- **Terms of Service**: http://lbs.amap.com/home/terms/
+- **Limitations**: Only good for non-commercial use. For commercial usage please check http://lbs.amap.com/home/terms/
+- **Notes**: To use AMap set `Geocoder.configure(:lookup => :amap, :api_key => "your_api_key")`.
+
 ### IP Address Services
 
 #### FreeGeoIP (`:freegeoip`)
@@ -749,7 +765,8 @@ This uses the PostcodeAnywhere UK Geocode service, this will geocode any string 
 * **Documentation**: https://market.mashape.com/fcambus/telize
 * **Terms of Service**: ?
 * **Limitations**: ?
-* **Notes**: To use Telize set `Geocoder.configure(:ip_lookup => :telize, :api_key => "your_api_key")`.
+* **Notes**: To use Telize set `Geocoder.configure(:ip_lookup => :telize, :api_key => "your_api_key")`. Or configure your self-hosted telize with the `host` option: `Geocoder.configure(:ip_lookup => :telize, :telize => {:host => "localhost"})`.
+
 
 #### MaxMind Legacy Web Services (`:maxmind`)
 
@@ -884,6 +901,7 @@ This example uses Redis, but the cache store can be any object that supports the
 * `store#[](key)` or `#get` or `#read` - retrieves a value
 * `store#[]=(key, value)` or `#set` or `#write` - stores a value
 * `store#del(url)` - deletes a value
+* `store#keys` - (Optional) Returns array of keys. Used if you wish to expire the entire cache (see below).
 
 Even a plain Ruby hash will work, though it's not a great choice (cleared out when app is restarted, not shared between app instances, etc).
 
