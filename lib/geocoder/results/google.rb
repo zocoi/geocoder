@@ -46,6 +46,7 @@ module Geocoder::Result
         state['long_name']
       end
     end
+    alias_method :county, :sub_state
 
     def sub_state_code
       if state = address_components_of_type(:administrative_area_level_2).first
