@@ -12,9 +12,13 @@ module Geocoder::Result
     end
 
     def neighborhood
-      if neighborhood = address_components_of_type(:neighborhood).first
-        neighborhood['long_name']
+      fields = [:neighborhood, :sublocality_level_1]
+      fields.each do |f|
+        if neighborhood = address_components_of_type(f).first
+          return neighborhood['long_name']
+        end
       end
+      return nil
     end
 
     def city
