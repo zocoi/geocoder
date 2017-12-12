@@ -17,6 +17,10 @@ module Geocoder::Result
     end
     
     alias_method :street_address, :street
+    
+    def place_types
+      data['place_type']
+    end
 
     def city
       context_part('place')
