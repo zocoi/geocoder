@@ -31,7 +31,7 @@ module Geocoder::Result
     end
     
     def state_code
-      US_STATES[state.downcase]
+      US_STATES[state.downcase] if state
     end
 
     def postal_code
