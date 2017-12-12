@@ -8,7 +8,7 @@ module Geocoder::Result
     end
 
     def place_name
-      data['text']
+      data['place_name']
     end
     alias_method :name, :place_name
 
