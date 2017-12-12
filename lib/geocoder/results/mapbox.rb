@@ -55,6 +55,9 @@ module Geocoder::Result
     private
 
     def context_part(name)
+      if data['id'] =~ Regexp.new(name)
+        return data['text']
+      end
       context.map { |c| c['text'] if c['id'] =~ Regexp.new(name) }.compact.first
     end
 
