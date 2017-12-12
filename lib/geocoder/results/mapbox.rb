@@ -10,10 +10,13 @@ module Geocoder::Result
     def place_name
       data['text']
     end
+    alias_method :name, :place_name
 
     def street
       data['properties']['address']
     end
+    
+    alias_method :street_address, :street
 
     def city
       context_part('place')
@@ -22,8 +25,10 @@ module Geocoder::Result
     def state
       context_part('region')
     end
-
-    alias_method :state_code, :state
+    
+    def state_code
+      US_STATES[state.downcase]
+    end
 
     def postal_code
       context_part('postcode')
