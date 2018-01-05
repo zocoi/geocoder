@@ -10,7 +10,10 @@ module Geocoder::Result
     def place_name
       data['place_name']
     end
-    alias_method :name, :place_name
+    
+    def name
+      data['text']
+    end
 
     def street
       data['properties']['address']
