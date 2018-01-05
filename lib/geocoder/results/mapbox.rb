@@ -16,7 +16,11 @@ module Geocoder::Result
     end
 
     def street
-      data['properties']['address']
+      if data['properties']['address']
+        data['properties']['address']
+      elsif data['address']
+        "#{data['address']} #{data['text']}"
+      end
     end
     
     alias_method :street_address, :street
@@ -69,4 +73,3 @@ module Geocoder::Result
     end
   end
 end
-
