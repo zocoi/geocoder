@@ -12,7 +12,11 @@ module Geocoder::Result
     end
     
     def name
-      data['text']
+      if place_types.include?('address')
+        street
+      else
+        data['text']
+      end
     end
 
     def street
