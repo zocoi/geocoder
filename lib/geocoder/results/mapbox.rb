@@ -52,8 +52,10 @@ module Geocoder::Result
     def country
       context_part('country')
     end
-
-    alias_method :country_code, :country
+    
+    def country_code
+      context_short_code_part('country')
+    end
 
     def neighborhood
       context_part('neighborhood')
@@ -70,6 +72,13 @@ module Geocoder::Result
         return data['text']
       end
       context.map { |c| c['text'] if c['id'] =~ Regexp.new(name) }.compact.first
+    end
+    
+    def context_short_code_part(name)
+      if data['id'] =~ Regexp.new(name)
+        return data['properties']['short_code']
+      end
+      context.map { |c| c['short_code'] if c['id'] =~ Regexp.new(name) }.compact.first
     end
 
     def context
